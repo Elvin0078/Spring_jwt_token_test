@@ -10,4 +10,5 @@ public class SpringJwtTokenTestApplication {
         SpringApplication.run(SpringJwtTokenTestApplication.class, args);
     }
 
+
 }
