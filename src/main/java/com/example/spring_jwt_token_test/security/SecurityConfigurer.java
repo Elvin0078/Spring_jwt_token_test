@@ -1,6 +1,7 @@
 package com.example.spring_jwt_token_test.security;
 
 
+import com.example.spring_jwt_token_test.util.Md5Generator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,6 +24,8 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     private UserDetailsService myUserDetailsService;
     @Autowired
     private JwtRequestFilter jwtRequestFilter;
+    @Autowired
+    public Md5Generator md5Generator;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -30,8 +33,18 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
+    public PasswordEncoder getEncoder() {
+        return new PasswordEncoder() {
+            @Override
+            public String encode(CharSequence rawPassword) {
+                return md5Generator.generateMd5(rawPassword.toString());
+            }
+
+            @Override
+            public boolean matches(CharSequence rawPassword, String encodedPassword) {
+                return md5Generator.generateMd5(rawPassword.toString()).equals(encodedPassword);
+            }
+        };
     }
 
     @Override
