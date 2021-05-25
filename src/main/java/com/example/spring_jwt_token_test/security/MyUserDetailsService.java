@@ -25,9 +25,7 @@ public class MyUserDetailsService implements UserDetailsService {
 
          com.example.spring_jwt_token_test.model.User user =  userService.getUserByLogin(username);
 
-//    return new User("Elvin","1",new ArrayList<>());
-
-        return new User(user.getUsername() , user.getPassword(),
-                new ArrayList<>());
+         return new User(user.getUsername() , user.getPassword(),
+                 new ArrayList<>());
     }
 }
